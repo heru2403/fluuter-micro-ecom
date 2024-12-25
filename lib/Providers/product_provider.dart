@@ -10,6 +10,9 @@ class ProductProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
 
   Future<void> fetchProducts() async {
+    _isLoading = true; // Set loading state sebelum memulai fetch
+    notifyListeners(); // Notifikasi perubahan pada loading state
+
     try {
       final response =
           await http.get(Uri.parse('http://10.20.30.8:3000/products'));
@@ -17,14 +20,15 @@ class ProductProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         _products = data['data'];
+        _isLoading = false; // Hentikan loading saat data diterima
+        notifyListeners(); // Hanya notifikasi jika data berhasil diterima
       } else {
         throw Exception('Failed to load products');
       }
     } catch (e) {
       print('Error fetching products: $e');
-    } finally {
-      _isLoading = false;
-      notifyListeners();
+      _isLoading = false; // Hentikan loading jika terjadi error
+      notifyListeners(); // Tetap notifikasi untuk perubahan state
     }
   }
 }
