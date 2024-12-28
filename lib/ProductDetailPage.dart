@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:product_app/Providers/ReviewProvider.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class ProductDetailPage extends StatefulWidget {
   final Map<String, dynamic> product;
@@ -28,6 +29,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   @override
   Widget build(BuildContext context) {
     final reviewProvider = Provider.of<ReviewProvider>(context);
+
+    // Formatter untuk harga
+    final NumberFormat currencyFormatter =
+        NumberFormat.currency(locale: 'id', symbol: 'Rp ', decimalDigits: 0);
 
     return Scaffold(
       appBar: AppBar(
@@ -80,7 +85,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        "Rp ${widget.product['price']}",
+                        currencyFormatter.format(widget.product['price']),
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 20,

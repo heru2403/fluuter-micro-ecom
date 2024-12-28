@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:product_app/ProductDetailPage.dart';
 import 'package:product_app/Providers/product_provider.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -14,6 +15,10 @@ class HomePage extends StatelessWidget {
     if (productProvider.isLoading && productProvider.products.isEmpty) {
       productProvider.fetchProducts();
     }
+
+    // Formatter untuk harga
+    final NumberFormat currencyFormatter =
+        NumberFormat.currency(locale: 'id', symbol: 'Rp ', decimalDigits: 0);
 
     return Scaffold(
       backgroundColor: const Color.fromRGBO(58, 66, 86, 1.0),
@@ -67,7 +72,7 @@ class HomePage extends StatelessWidget {
                             ),
                           ),
                           subtitle: Text(
-                            "Rp ${product['price']}",
+                            currencyFormatter.format(product['price']),
                             style: const TextStyle(color: Colors.white70),
                           ),
                           trailing: const Icon(
